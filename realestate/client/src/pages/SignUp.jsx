@@ -27,9 +27,9 @@ const SignUp = () => {
       setLoading(false);
       setError(null);
       navigate("/sign-in");
-      console.log(response.data);
+      //console.log(response.data);
     } catch (error) {
-      console.log("error", error.message);
+      //console.log("error", error.message);
       setError(error.message);
     }
 

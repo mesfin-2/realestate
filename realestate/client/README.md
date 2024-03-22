@@ -14,3 +14,5 @@
 4. Setup Server
 5. Start the backend, sign-in and signup api
 6. Integrate with mongodb and the backend authentication api with frontend
+7. make user sign-up api, Test it to create a user with username/email/password
+8. Integrate the api with the frontend/(REMEMBER cors()) axios post request to submit form
