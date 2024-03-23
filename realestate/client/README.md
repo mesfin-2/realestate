@@ -35,3 +35,66 @@
 ## Testing Redux Sclices
 
 12. Make sure you have Redux DevTools Installed in the Browser
+
+13. use SignIn page to apply redux toolkit
+14. The user login information is displayed in the reduxDevTools state, but its not persistent, If you refreash the browser the data lost.
+
+## 15. Steps to make Redux-Persist to work
+
+      - Use/Install package called redux-persist in the client
+      -  Make the following configuration in the store.js
+
+```js
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const rootReducer = combineReducers({ user: userReducer });
+
+const persistConfig = {
+  key: "root",
+  storage,
+  version: 1,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+```
+
+- Then, change the reducer part with "persistedReducer"
+
+```js
+
+//reducer: { user: userReducer },
+  reducer: persistedReducer,
+
+```
+
+- Finally export
+
+```js
+export const persistor = persistStore(store);
+```
+
+## 16. Integrate the Redux-persist with main.js
+
+- Update the main.js as follows
+
+```js
+import { persistor, store } from "./redux/store.js";
+import { PersistGate } from "redux-persist/integration/react";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>
+);
+```
+
+## 17. Test Redux-persist if its persisting data, by refreshing browser
+
+- Try to login a user with email and password
+- Go to chrome Browser > Inspect > Application > LocalStorage > http://localhost:5173/ > persist:tool
+- All current user information is Persisted

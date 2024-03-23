@@ -35,7 +35,7 @@ const SignIn = () => {
         { withCredentials: true } //for the cookies to saved in the browser/check also the cors()
       );
       //setLoading(false);
-      dispatch(signInSuccess(response.data));
+      dispatch(signInSuccess(response));
       //setError(null);
       navigate("/");
       //console.log(response.data);
