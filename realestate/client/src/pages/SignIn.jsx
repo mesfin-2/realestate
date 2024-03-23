@@ -1,13 +1,21 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/slices/userSlice";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  //const [error, setError] = useState(null);
+  //const [loading, setLoading] = useState(false);
+  const { loading, error } = useSelector((state) => state.user); //inside userSlice the name : is "user"
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -17,28 +25,35 @@ const SignIn = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
+    //setLoading(true); //Instead of setLoading now we use slice
+    dispatch(signInStart());
+    //setError(null);
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/signin",
         formData,
         { withCredentials: true } //for the cookies to saved in the browser/check also the cors()
       );
-      setLoading(false);
-      setError(null);
+      //setLoading(false);
+      dispatch(signInSuccess(response.data));
+      //setError(null);
       navigate("/");
       //console.log(response.data);
     } catch (error) {
-      setLoading(false);
+      //setLoading(false);
+      dispatch(signInFailure());
       if (
         error.response &&
         error.response.data &&
         error.response.data.message
       ) {
-        setError(error.response.data.message);
+        dispatch(signInFailure(error.response.data.message));
+        //setError(error.response.data.message);
       } else {
-        setError("An unexpected error occurred. Please try again later.");
+        dispatch(
+          signInFailure("An unexpected error occurred. Please try again later.")
+        );
+        //setError("An unexpected error occurred. Please try again later.");
       }
     }
   };

@@ -19,6 +19,19 @@
 
 ---
 
-## Intgrate api with Frontend
+## Intgrate api with Frontend - Step3
 
 9. make the SignUp and SignIn pages work with the api, makesure the cookie is saved in the client browser after signin
+
+---
+
+## Redux - Step4
+
+10. create redux store in client side
+11. add the Provider in main.js
+
+---
+
+## Testing Redux Sclices
+
+12. Make sure you have Redux DevTools Installed in the Browser
