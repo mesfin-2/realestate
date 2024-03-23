@@ -30,7 +30,7 @@ export const signup = async (req, res) => {
     res.status(201).json(newUser);
   } catch (error) {
     console.error("Error signing up:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "credential Error" });
   }
 };
 
@@ -51,22 +51,24 @@ export const signin = async (req, res) => {
     }
     // If user successfully logged in, generate a JWT token
     const token = jwt.sign({ id: existedUser._id }, process.env.JWT_SECRET);
+    //remove password in response from the existed user
+    const { password: pass, ...rest } = existedUser._doc;
 
     // Create a user object without the password
-    const userWithoutPassword = {
-      _id: existedUser._id,
-      username: existedUser.username,
-      email: existedUser.email,
-      // Add other user properties as needed
-    };
+    // const userWithoutPassword = {
+    //   id: existedUser._id,
+    //   username: existedUser.username,
+    //   email: existedUser.email,
+    //   // Add other user properties as needed
+    // };
 
     // Set the token into a cookie
     res
       .cookie("access_token", token, { httpOnly: true })
       .status(200)
-      .json({ user: userWithoutPassword });
+      .json(rest); //everything except password
   } catch (error) {
     console.error("Error signing in:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "credential Error  " });
   }
 };

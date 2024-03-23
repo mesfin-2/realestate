@@ -9,7 +9,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: true, credentials: true })); //This is important for the cookies to be saved in the client browser
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use(middleware.errorHandler);

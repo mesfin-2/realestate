@@ -22,18 +22,25 @@ const SignUp = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/signup",
-        formData
+        formData,
+        { withCredentials: true } //for the cookies to saved in the browser/check also the cors()
       );
       setLoading(false);
       setError(null);
       navigate("/sign-in");
       //console.log(response.data);
     } catch (error) {
-      //console.log("error", error.message);
-      setError(error.message);
+      setLoading(false);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      } else {
+        setError("An unexpected error occurred. Please try again later.");
+      }
     }
-
-    setLoading(false);
   };
   return (
     <div className="p-3 max-w-lg mx-auto">

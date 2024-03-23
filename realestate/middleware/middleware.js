@@ -9,7 +9,7 @@ const errorHandler = (error, req, res, next) => {
     case "CastError":
       return res.status(400).json({ error: "Malformatted ID" });
     case "ValidationError":
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: "Invalid Crediantial" });
     case "MongoServerError":
       if (error.code === 11000) {
         return res.status(400).json({ error: "Username must be unique" });
