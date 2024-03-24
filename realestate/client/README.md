@@ -161,3 +161,86 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   ```
 
   - Any component/page can be inserted in Privateroute If it needs to be protected
+
+## 23. Update Profile Page
+
+- Add form inputes to update user profile
+- Follow the Profile input form code
+- add useRef to reference for the file we want to upload
+
+  ```js
+       <input type="file" ref={fileRef} hidden accept="image/*" />
+      <img
+        onClick={() => fileRef.current.click()}
+        className="rounded-full h-24 w-24 object-cover cursor-pointer mt-2 self-center"
+        src={currentUser.avatar}
+      />
+
+  ```
+
+- to hide the file upload/choose file and to specify only images is accepted `hidden accept="image/*`
+  - First add image Upload html element
+    `js      <input type="file" /> `
+
+## 24. Firebase file storage
+
+- Go back to firebase > Storage > select your geo location/near you
+- Before we start working with storage we need to edit the Rules to allow us to upload edit and read files
+- Go to Rules tab
+- Make the following changes to allow read & write etc.. and then save/publish
+
+```js
+rules_version = '2';
+
+// Craft rules based on data in your Firestore database
+// allow write: if firestore.get(
+//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read;
+      allow write: if
+      request.resource.size < 2 * 1024 * 1024 &&
+      request.resource.contentType.matches("image/.*")
+    }
+  }
+}
+
+
+
+```
+
+    - The Rules allow everyone to read , and allow write with condition
+    -   2megabyte
+    - Only images
+
+## 25. File/Image Upload to the app
+
+- create a useState : ` const [file, setFile] = useState(undefined);`
+- update input file inside form
+
+```js
+<input
+  onChange={(e) => setFile(e.target.files[0])}
+  type="file"
+  ref={fileRef}
+  hidden
+  accept="image/*"
+/>
+```
+
+- If there are many images we choose the first one
+- can check what is inside file
+
+  ```
+  console.log("file", file);
+
+  ```
+
+##  26. handle File Upload
+- Using useEffect handle the file upload mentions and methods from firebase storage
+- Since When we upload the picture, we also submit form data, we need a useState to handle the form submition
+  ```
+  const[formData, setFormData] = useState({})
+
+  ```
