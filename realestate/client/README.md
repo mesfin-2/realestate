@@ -131,4 +131,33 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
 ## 20. Create API for the google Authentication
 
+- Make google api/controller inside auth.controller
+- Check If the user is already in database, if not create it and signin
+- If user is already/previously signed in with gmail , it generates a JWT (JSON Web Token) for that user and sends it back in a cookie along with the user data (excluding the password) as a JSON response.
+- Setting Cookie: `.cookie("access_token", token, { httpOnly: true })`
+  This line sets a cookie named access_token with the JWT as its value. The httpOnly: true option restricts access to the cookie to HTTP requests only, improving security.
+- Sending Response: ` .status(200).json(rest);`
+  This line sets the HTTP status code to 200 (OK) and sends the user data (excluding the password) as a JSON response.
+- Update auth.router `router.post("/google", google);`
 
+## 21. Get signin user data
+
+- Update Header.jsx to get user avatar from google
+- If user is signin then redirect user to a protected Profile page
+
+## 22. Protect Profile component/Page
+
+- Create a PrivateRoute component
+
+  - Get the current signin user
+  - If there is a user signin then show ``<Outlet />, Outlet is an inbuilt component
+    that displays other components as a children
+  - in this case PrivateRoute has Profile components as a child nested under it inside App.jsx client component
+
+  ```js
+  <Route element={<PrivateRoute />}>
+    <Route path="/profile" element={<Profile />} />
+  </Route>
+  ```
+
+  - Any component/page can be inserted in Privateroute If it needs to be protected

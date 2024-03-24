@@ -78,9 +78,9 @@ export const google = async (req, res) => {
   try {
     // Check if the user exists
     const existedUser = await User.findOne({ email });
-    if (!existedUser) {
-      return res.status(404).json({ message: "Invalid email or password" });
-    }
+    // if (!existedUser) {
+    //   return res.status(404).json({ message: "Invalid email or password" });
+    // }
     if (existedUser) {
       const token = jwt.sign({ id: existedUser._id }, process.env.JWT_SECRET);
       //remove password in response from the existed user
@@ -91,7 +91,8 @@ export const google = async (req, res) => {
         .status(200)
         .json(rest); //everything except password
     } else {
-      //Since password is required from our user model, we generate a random password that user can change it later
+      //If no user found with that email,we generate password and username,Since password and username are
+      // required from our user model, we generate a random password and username that user can change it later
       const generatedPassword = Math.random().toString(36).slice(-8); //0.89374jgkgjl=> last 8 digits
       const hashedPassword = bcrypt.hasg(generatedPassword, 10);
 
