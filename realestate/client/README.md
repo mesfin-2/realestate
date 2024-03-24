@@ -98,3 +98,37 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 - Try to login a user with email and password
 - Go to chrome Browser > Inspect > Application > LocalStorage > http://localhost:5173/ > persist:tool
 - All current user information is Persisted
+
+---
+
+## 18. Add Google OAuth functionality
+
+- Search for firebase google
+- Create a project > no google analytics > web > install firebase in client side
+
+- create a file called firebase in client side
+- copy the code (initializeApp) to firebase file
+- remeber to add export const app = initializeApp...
+- create .env file in client side and save the firebase apiKey inside env
+- click on continue in firebase > choose to authentication > get started > choose google signin method > enable google > give project name "addis-realestate" > select your gmail account > save
+
+---
+
+## NB-google firebase
+
+- Make sure you have two gmail account for the Popup to work well, If you have only one gmail account, and once you loggied with it, nexttime, the pop up won't come.
+- You might see a Cross-Origin Error in the console, that error is not for google, rather its for firebase, and its only chrome issue , if you run it in other browser no issue, so ignore the error
+
+---
+
+## 19. Integrate OAuth in the front end-OAuth component
+
+- Follow the code in OAuth component, inside the handleGoogle OAuth handler
+- make a post request, Remember to create endpoint api from the backend side
+- Apply useDispatch and signInSuccess action to handle the data got from the backend
+
+---
+
+## 20. Create API for the google Authentication
+
+
