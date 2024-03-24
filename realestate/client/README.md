@@ -237,10 +237,38 @@ service firebase.storage {
 
   ```
 
-##  26. handle File Upload
-- Using useEffect handle the file upload mentions and methods from firebase storage
-- Since When we upload the picture, we also submit form data, we need a useState to handle the form submition
+## 26. handle File Upload
+
+- Using useEffect handle the file upload functions and methods from firebase storage
+- Since When we upload the picture, we also update formdata and submit form data, we need a useState to handle the form submition
+
   ```
   const[formData, setFormData] = useState({})
 
   ```
+
+- handleFileUpload => Follow this function about the uploading feature
+- Then Make some logical rendering
+
+```js
+The most Important Section
+<img
+          onClick={() => fileRef.current.click()}
+          className="rounded-full h-24 w-24 object-cover cursor-pointer mt-2 self-center"
+          src={formData.avatar || currentUser.avatar}
+        />
+        <p className=" text-smf text-center">
+          {fileUploadError ? (
+            <span className="text-red-700">
+              Error Image upload (image must be less than 2 mb)
+            </span>
+          ) : filePercentage > 0 && filePercentage < 100 ? (
+            <span className="text-slate-700">{`Uploading ${filePercentage}%`}</span>
+          ) : filePercentage === 100 ? (
+            <span className="text-green-700">Image Successfully uploaded</span>
+          ) : (
+            ""
+          )}
+        </p>
+
+```
