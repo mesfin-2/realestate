@@ -214,6 +214,8 @@ service firebase.storage {
     -   2megabyte
     - Only images
 
+    ---
+
 ## 25. File/Image Upload to the app
 
 - create a useState : ` const [file, setFile] = useState(undefined);`
@@ -236,6 +238,8 @@ service firebase.storage {
   console.log("file", file);
 
   ```
+
+  ***
 
 ## 26. handle File Upload
 
@@ -272,3 +276,14 @@ The most Important Section
         </p>
 
 ```
+
+---
+
+## 27. Verifying Token, Why we need to verify token?
+
+- Before we update user info, such as username, email and avatar, we need to verify that user is signin,
+- Its remembered that We have saved user token in cookie, during users signin
+- so that we extract that token from cookie and verify its validity, Then we update the user
+- In other words , when we verify users token, then after we can send the user to a protected page
+- Inorder to verify token from cookie, we need package called `cookie parser`
+- Then add inside index.js ` app.use(cookieParser());`
