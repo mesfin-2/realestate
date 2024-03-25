@@ -1,5 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateUserFailure,
+  updateUserStart,
+  updateUserSuccess,
+} from "../redux/slices/userSlice";
+
 import { Link } from "react-router-dom";
 import {
   getDownloadURL,
@@ -8,25 +14,52 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { firebaseApp } from "../firebase";
+import axios from "axios";
 
 const Profile = () => {
   const fileRef = useRef(null);
-  const { currentUser } = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(false);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const [fileUploadError, setFileUploadError] = useState(false);
   const [file, setFile] = useState(undefined);
   const [filePercentage, setPercentage] = useState(0);
   const [formData, setFormData] = useState({});
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
   console.log("formData", formData);
   console.log("ffilePercentageile", filePercentage);
+  console.log("currentUser", currentUser);
 
   const handleChange = (e) => {
-    console.log(e.target.value);
+    setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    console.log("update");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(
+        `http://localhost:5000/api/users/update/${currentUser._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      const data = await res.json();
+      if (!data) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+    }
   };
 
   useEffect(() => {
@@ -37,17 +70,15 @@ const Profile = () => {
 
   const handleFileUpload = (file) => {
     const storage = getStorage(firebaseApp);
-    //incase someone uploads two similar images we git a name of current time
     const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
       "state_changed",
-      (snapshop) => {
+      (snapshot) => {
         const progress =
-          (snapshop.bytesTransferred / snapshop.totalBytes) * 100;
-        //console.log("Upload is " + progress + "% done");
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setPercentage(Math.round(progress));
       },
       (error) => {
@@ -95,19 +126,19 @@ const Profile = () => {
           placeholder="username"
           className="border p-3 rounded-lg"
           id="username"
-          value={currentUser.username}
+          defaultValue={currentUser.username}
           onChange={handleChange}
         />
         <input
-          type="text"
+          type="email"
           placeholder="email"
           className="border p-3 rounded-lg"
           id="email"
-          value={currentUser.email}
+          defaultValue={currentUser.email}
           onChange={handleChange}
         />
         <input
-          type="text"
+          type="password"
           placeholder="password"
           className="border p-3 rounded-lg"
           id="password"
@@ -133,6 +164,10 @@ const Profile = () => {
         <Link to={"/sign-out"}>
           <span className="text-red-700 cursor-pointer">Sign out</span>
         </Link>
+      </div>
+      <div className="text-red-700">{error ? error : ""}</div>
+      <div className="text-green-700">
+        {updateSuccess ? "User is updated successfully" : ""}
       </div>
     </div>
   );

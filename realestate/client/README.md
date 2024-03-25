@@ -283,7 +283,16 @@ The most Important Section
 
 - Before we update user info, such as username, email and avatar, we need to verify that user is signin,
 - Its remembered that We have saved user token in cookie, during users signin
-- so that we extract that token from cookie and verify its validity, Then we update the user
+- create a verifyUser.js
+- so that we extract that token from cookie and verify its validity in verifyToken function , Then we update the user
 - In other words , when we verify users token, then after we can send the user to a protected page
 - Inorder to verify token from cookie, we need package called `cookie parser`
 - Then add inside index.js ` app.use(cookieParser());`
+- We also must have updateUser function in userController, Basically this function as well as verifyToken, are responsible to update username, email, avatar from user profile, At the moment we are updating from the backend/api section
+- Refer them inside user route.
+
+  ```
+  router.post("/update/:id", verifyToken, updateUser);
+  ```
+
+## 28. Integrate the update Api with frontend

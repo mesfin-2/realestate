@@ -64,14 +64,14 @@ const SignIn = () => {
       {error && <div className="text-red-500 text-center">{error}</div>}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
-          type="text"
+          type="email"
           placeholder="email"
           className="border p-3 rounded-lg"
           id="email"
           onChange={handleChange}
         />
         <input
-          type="text"
+          type="password"
           placeholder="password"
           className="border p-3 rounded-lg"
           id="password"
