@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/user-route.js";
 import authRouter from "./routes/auth.route.js";
+import listingRouter from "./routes/listing.route.js";
 import middleware from "../middleware/middleware.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -24,6 +25,8 @@ app.use(cookieParser());
 app.use(cors({ origin: true, credentials: true })); //This is important for the cookies to be saved in the client browser
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter);
+
 app.use(middleware.errorHandler);
 app.use(middleware.unknownEndpoint);
 

@@ -355,3 +355,11 @@ The most Important Section
 
 - Add handleSignOutUser function in Profile.jsx
 - Remember to update userSlice, and export the new actions for signout
+
+---
+
+## 31. Creating Listing API
+
+- Create listing.route.js, listing.controller, listing.model
+- Update index.js
+- Test the Api "http://localhost:5000/api/listing/create"
