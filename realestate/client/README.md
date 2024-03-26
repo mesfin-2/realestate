@@ -296,3 +296,29 @@ The most Important Section
   ```
 
 ## 28. Integrate the update Api with frontend
+
+- Update userSlice, to make the state changes global
+
+  ```
+  updateUserStart: (state) => {
+    state.loading = true;
+  },
+  updateUserSuccess: (state, action) => {
+    state.currentUser = action.payload;
+    state.loading = false;
+    state.error = null;
+  },
+  updateUserFailure: (state, action) => {
+    state.error = action.payload;
+    state.loading = false;
+  },
+
+  ```
+
+- Follow the code in Profile.jsx `handleSubmit function`
+- Remember there is an api for updating, users-controller ` updateUser function`
+- make a reference of the controller inside the user-route
+
+## 29. Integrate the delete api with frontend
+
+- repeat step 28
