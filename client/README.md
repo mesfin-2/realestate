@@ -295,6 +295,8 @@ The most Important Section
   router.post("/update/:id", verifyToken, updateUser);
   ```
 
+---
+
 ## 28. Integrate the update Api with frontend
 
 - Update userSlice, to make the state changes global
@@ -322,3 +324,34 @@ The most Important Section
 ## 29. Integrate the delete api with frontend
 
 - repeat step 28
+
+---
+
+## 30. Integrate the signout api with frontend
+
+- Signout is simply clearingout a cookie/token
+- This time we create api in auth-controller not user-controller
+
+  ```
+  export const signout = (req, res, next) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json("User has been logged out!");
+  } catch (error) {
+    next(error);
+  }
+  };
+
+
+  ```
+
+- signout is a 'get' request since we don't send any data
+- update auth-route
+
+  ```
+  router.get("/signout", signout);
+
+  ```
+
+- Add handleSignOutUser function in Profile.jsx
+- Remember to update userSlice, and export the new actions for signout
