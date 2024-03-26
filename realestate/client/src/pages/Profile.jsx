@@ -12,7 +12,7 @@ import {
   updateUserSuccess,
 } from "../redux/slices/userSlice";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -26,6 +26,7 @@ const Profile = () => {
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [fileUploadError, setFileUploadError] = useState(false);
   const [file, setFile] = useState(undefined);
@@ -150,6 +151,9 @@ const Profile = () => {
       dispatch(signOutUserFailure(error.message));
     }
   };
+  const handleListing = () => {
+    navigate("/create-listing");
+  };
   return (
     <div className="p-3 max-w-lg mx-auto ">
       <h1 className=" text-3xl text-center font-semibold my-7">Profile</h1>
@@ -210,6 +214,7 @@ const Profile = () => {
           {loading ? "Loading" : "Update"}
         </button>
         <button
+          onClick={handleListing}
           disabled={loading}
           className="bg-green-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
