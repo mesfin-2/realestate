@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
@@ -39,17 +42,17 @@ const Profile = () => {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(
+      const response = await axios.post(
         `http://localhost:5000/api/users/update/${currentUser._id}`,
+        formData,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
         }
       );
-      const data = await res.json();
+
+      const data = await response.data;
       if (!data) {
         dispatch(updateUserFailure(data.message));
         return;
@@ -90,6 +93,43 @@ const Profile = () => {
         );
       }
     );
+  };
+
+  // const handleDeleteUser = async () => {
+  //   try {
+  //     dispatch(deleteUserStart());
+  //     const response = await axios.delete(
+  //       `http://localhost:5000/api/users/delete/${currentUser._id}`
+  //     );
+
+  //     const data = await response.data;
+  //     if (!data) {
+  //       dispatch(deleteUserFailure(error.message));
+  //       return;
+  //     }
+  //     dispatch(deleteUserSuccess(data));
+  //   } catch (error) {
+  //     dispatch(deleteUserFailure(error.message));
+  //   }
+  // };
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(
+        `http://localhost:5000/api/users/${currentUser._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = res.json();
+      if (!data) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
   };
   return (
     <div className="p-3 max-w-lg mx-auto ">
@@ -157,10 +197,15 @@ const Profile = () => {
           {loading ? "Loading" : "create listing"}
         </button>
       </form>
+
       <div className="flex justify-between mt-5">
-        <Link to={"/delete"}>
-          <span className="text-red-700 cursor-pointer">Delete Account</span>
-        </Link>
+        <span
+          onClick={handleDeleteUser}
+          className="text-red-700 cursor-pointer"
+        >
+          Delete Account
+        </span>
+
         <Link to={"/sign-out"}>
           <span className="text-red-700 cursor-pointer">Sign out</span>
         </Link>

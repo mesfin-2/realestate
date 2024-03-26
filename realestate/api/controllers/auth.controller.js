@@ -41,7 +41,7 @@ export const signin = async (req, res) => {
     // Check if the user exists
     const existedUser = await User.findOne({ email });
     if (!existedUser) {
-      return res.status(404).json({ message: "Invalid email or password" });
+      return res.status(404).json({ message: "User Not Found" });
     }
 
     // Compare the user's password with the provided password
