@@ -4,6 +4,9 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
+  signOutUserFailure,
+  signOutUserStart,
+  signOutUserSuccess,
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
@@ -116,12 +119,12 @@ const Profile = () => {
     try {
       dispatch(deleteUserStart());
       const res = await fetch(
-        `http://localhost:5000/api/users/${currentUser._id}`,
+        `http://localhost:5000 /api/users/delete/${currentUser._id}`,
         {
           method: "DELETE",
         }
       );
-      const data = res.json();
+      const data = await res.json();
       if (!data) {
         dispatch(deleteUserFailure(data.message));
         return;
@@ -129,6 +132,22 @@ const Profile = () => {
       dispatch(deleteUserSuccess(data));
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
+    }
+  };
+  //signout
+  const handleSignOutUser = async () => {
+    try {
+      dispatch(signOutUserStart());
+      //since signout method is get request its default we don't mention its method
+      const res = await axios.get("http://localhost:5000/api/auth/signout");
+      const data = await res.data;
+      if (!data) {
+        dispatch(signOutUserFailure(data.message));
+        return;
+      }
+      dispatch(signOutUserSuccess(data));
+    } catch (error) {
+      dispatch(signOutUserFailure(error.message));
     }
   };
   return (
@@ -206,9 +225,12 @@ const Profile = () => {
           Delete Account
         </span>
 
-        <Link to={"/sign-out"}>
-          <span className="text-red-700 cursor-pointer">Sign out</span>
-        </Link>
+        <span
+          onClick={handleSignOutUser}
+          className="text-red-700 cursor-pointer"
+        >
+          Sign out
+        </span>
       </div>
       <div className="text-red-700">{error ? error : ""}</div>
       <div className="text-green-700">
