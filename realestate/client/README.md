@@ -363,3 +363,13 @@ The most Important Section
 - Create listing.route.js, listing.controller, listing.model
 - Update index.js
 - Test the Api "http://localhost:5000/api/listing/create"
+- Follow CreateListing.jsx
+
+## 32. Uploading Listing Images
+
+- Inside CreateListing.jax page
+  - Implement handleImageSubmit
+  - function storageImage
+- Also deleting listing Image handleRemoveImage
+- uploading ? "UPLADING" : "Upload state changes
+- Make sure all the error handling are working such as uploding something otherthan image, image size morethan 2mb..

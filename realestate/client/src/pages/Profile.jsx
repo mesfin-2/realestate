@@ -34,8 +34,8 @@ const Profile = () => {
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
-  console.log("formData", formData);
-  console.log("ffilePercentageile", filePercentage);
+  //console.log("formData", formData);
+  //console.log("ffilePercentageile", filePercentage);
   console.log("currentUser", currentUser);
 
   const handleChange = (e) => {
